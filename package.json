@@ -1,0 +1,21 @@
+{
+  "name": "rest-api-node-mongodb",
+  "version": "1.0.0",
+  "description": "build rest api with node and mongodb.",
+  "main": "Server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shenghuayou/rest-api-node-mongodb"
+  },
+  "keywords": [
+    "Node.js",
+    "mongoDb"
+  ],
+  "author": "Sheng",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongoose": "^4.1.2"
+  }
+}
