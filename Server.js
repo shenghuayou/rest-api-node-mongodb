@@ -40,29 +40,37 @@ router.route("/api/users")
             res.json(response);
         });
     })
+
     .post(function(req,res){
         var db = new userSchema();
         var response = {};
         db.Email = req.body.Email;
         db.Password = req.body.Password;
         db.Usertype = "normal";
-        var check = isEmail(req.body.Email)
-        console.log(check)
-        if (check === true) {
-            db.save(function(err){
-                if(err) {
-                    response = "adding data error";
-                } 
-                else {
-                    response = "Data has been added";
-                }
-            res.json(response);
-            });
-        }
-        else{
-            response ="please enter a correct email adress";
-            res.json(response);
-        }      
+        var check_format = isEmail(req.body.Email);
+        var promise = userSchema.find({"Email":req.body.Email}).exec()
+        promise.then(function(data){
+            console.log(data.length);
+            if ((check_format === true) && (data.length===0)) {
+                db.save(function(err){
+                    if(err) {
+                        response = "adding data error";
+                    } 
+                    else {
+                        response = "Data has been added";
+                    }
+                res.json(response);
+                });
+            }
+            else if (check_format === false) {
+                response ="please enter a correct email adress";
+                res.json(response);
+            }
+            else{
+                response = "username exist already";
+                res.json(response);
+            }   
+        })   
     });
 
 router.route("/api/users/:Email")
@@ -121,5 +129,5 @@ router.route("/api/users/:Email")
 
 app.use('/',router);
 
-app.listen(3000);
-console.log("server is up in port 3000");
+app.listen(3333);
+console.log("server is up in port 3333");
