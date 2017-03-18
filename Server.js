@@ -3,7 +3,27 @@ var app         =   express();
 var bodyParser  =   require("body-parser");
 var router      =   express.Router();
 var userSchema  =   require("./models/userSchema");
-var passport    =   require("./passport")
+var passportFunc=   require("./passport")
+var passport    =   require("passport")
+var flash       =   require('connect-flash');
+var morgan      =  require('morgan');
+var cookieParser= require('cookie-parser');
+var bodyParser  = require('body-parser');
+var session     = require('express-session');
+
+passportFunc(passport);
+app.use(cookieParser()); 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.use(session({
+    secret: 'ilovescotchscotchyscotchscotch',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 //allow to make request from other domains
 var allowCrossDomain = function(req, res, next) {
@@ -15,7 +35,6 @@ var allowCrossDomain = function(req, res, next) {
 app.use(bodyParser.json());
 app.use(allowCrossDomain);
 
-//functions here
 //a simple email check
 function isEmail(email)
 {
@@ -24,11 +43,17 @@ function isEmail(email)
 } 
 
 
-//REST request
+//get pages
 router.get("/",function(req,res){
     res.json('home');
 });
 
+router.get("/signup",function(req,res){
+    res.render("signup.ejs")
+});
+
+
+//REST requests
 router.route("/api/users")
     .get(function(req,res){
         var response = {};
