@@ -2,7 +2,8 @@ var express     =   require("express");
 var app         =   express();
 var bodyParser  =   require("body-parser");
 var router      =   express.Router();
-var userSchema =   require("./models/userSchema");
+var userSchema  =   require("./models/userSchema");
+var passport    =   require("./passport")
 
 //allow to make request from other domains
 var allowCrossDomain = function(req, res, next) {
