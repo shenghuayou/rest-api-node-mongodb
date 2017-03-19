@@ -41,11 +41,32 @@ module.exports = function(router, passport) {
     //REST requests for all users, build schedules
     router.route("/api/schedules")
         .get(isLoggedIn,function(req,res){
-            //res.render()
+            var response = {};
+            scheduleSchema.find({"Email":req.user.Email},function(err,data){
+                if(err) {
+                    response = "fetching data error";
+                } else {
+                    response = data;
+                }
+                res.json(response);
+            });
         })
-
+        
         .post(isLoggedIn,function(req,res){
-
+            var db = new scheduleSchema();
+            var response = {};
+            db.Email = req.user.Email;
+            db.Event = req.body.Event;
+            db.Time = req.body.Time;
+            db.save(function(err){
+                if(err) {
+                    response = "adding schedule error";
+                    res.json(response);
+                } 
+                else {
+                    res.json("You have created schedule");
+                }
+            }) 
         })
 
         .put(isLoggedIn,function(req,res){
@@ -118,13 +139,14 @@ module.exports = function(router, passport) {
                 else {
                     if(req.body.Password !== undefined) {
                         data.Password = req.body.Password;
-                        
+                        data.Usertype = "normal";
+                        data.Email = req.user.Email;
                     }
                     data.save(function(err){
                         if(err) {
                             response = "updating data error";
                         } else {
-                            
+                            response = "Data has been updated for "+req.user.Email;
                         }
                         res.json(response);
                     })
