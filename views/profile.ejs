@@ -9,20 +9,25 @@
 </head>
 <body>
 <div align="center">
-<h1>here is profile</h1>
+<h1>Here is Profile</h1>
 	<% if (user.Email) { %>
 			<p>
 		        <strong>login email</strong>: <%= user.Email %><br>
 		        <strong>login password</strong>: <%= user.Password %><br>
-		        <strong>login usertype</strong>: <%= user.Usertype %>
+		        <strong>login usertype</strong>: <%= user.Usertype %><br>
+		       	<form method="POST" action="/api/users/?_method=PUT">
+				  	New Password: <input type="text" name="Password"><button type="submit">Change</button>
+				</form>
 		    </p>
 	    	<% if(user.Usertype==="admin") { %>
+	    		<hr>
+	    		<h1>Admin Only</h1>
 	    		<a href="/api/users"><button>users-info</button></a>
 	    		<br>
 	    		<br>
-	    		<form name="client" action="/api/users" method="delete">
-					Email: <input type="text" name="Email"> <input type="submit" value="Delete">
-				</form> 
+	    		<form method="POST" action="/api/users/?_method=DELETE">
+				  Email: <input type="text" name="Email"><button type="submit">Delete</button>
+				</form>
 	    	<% } %>
 	<% } %>
 </div>

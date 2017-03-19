@@ -38,10 +38,10 @@ module.exports = function(router, passport) {
                 failureFlash : true // allow flash messages
             }));
 
-    //REST requests for all users
+    //REST requests for all users, build schedules
     router.route("/api/schedules")
         .get(isLoggedIn,function(req,res){
-
+            //res.render()
         })
 
         .post(isLoggedIn,function(req,res){
@@ -57,8 +57,8 @@ module.exports = function(router, passport) {
         })
 
 
-    //REST requests for admin only
-    router.route("/api/users")
+    //User info REST API. GET, PUT, DELETE requests for admin only
+    router.route("/api/users/")
         .get(isLoggedIn,function(req,res){
             if (req.user.Usertype === "admin"){
                 var response = {};
@@ -106,64 +106,44 @@ module.exports = function(router, passport) {
                     res.json(response);
                 }   
             })   
-        });
+        })
 
-    router.route("/api/users/:Email")
-        .get(isLoggedIn,function(req,res){
-            if (req.user.Usertype === "admin"){
-                var response = {};
-                userSchema.find({"Email":req.params.Email},function(err,data){
-                    if(err) {
-                        response = "fetching data error";
-                    } else {
-                        response = data
-                    }
-                    res.json(response);
-                });
-            }
-            else
-                res.json("you have not right to view this");
-        })
         .put(isLoggedIn,function(req,res){
-            if (req.user.Usertype === "admin"){
-                var response = {};
-                userSchema.find({"Email":req.params.Email},function(err,data){
-                    if(err) {
-                        response = "fetching data error";
-                    } 
-                    else {
-                        if(req.body.Email !== undefined) {
-                            data.Email = req.body.Email;
-                        }
-                        if(req.body.Password !== undefined) {
-                            data.Password = req.body.Password;
-                        }
-                        data.save(function(err){
-                            if(err) {
-                                response = "updating data error"
-                            } else {
-                                response = "Data has been updated for "+req.params.id
-                            }
-                            res.json(response);
-                        })
+            var response = {};
+            console.log(req.body.Password);
+            userSchema.find({"Email":req.user.Email},function(err,data){
+                if(err) {
+                    response = "fetching data error";
+                } 
+                else {
+                    if(req.body.Password !== undefined) {
+                        data.Password = req.body.Password;
+                        
                     }
-                });
-            }
-            else
-                res.json("you have not right to do this");
+                    data.save(function(err){
+                        if(err) {
+                            response = "updating data error";
+                        } else {
+                            
+                        }
+                        res.json(response);
+                    })
+                }
+            });
         })
+
         .delete(isLoggedIn,function(req,res){
             if (req.user.Usertype === "admin"){
                 var response = {};
-                userSchema.find({"Email":req.params.Email},function(err,data){
+                userSchema.find({"Email":req.body.Email},function(err,data){
                     if(err) {
                         response = {"message" : "Error fetching data"};
                     } else {
-                        userSchema.remove({"Email" : req.params.Email},function(err){
+                        userSchema.remove({"Email" : req.body.Email},function(err){
                             if(err) {
                                 response = "Error deleting data"
                             } else {
-                                response = "Data in"+req.params.Email+" has been deleted"
+                                response = "Data for ("+req.body.Email+") has been deleted"
                             }
                             res.json(response);
                         });

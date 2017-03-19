@@ -10,9 +10,12 @@ var morgan      =   require('morgan');
 var cookieParser=   require('cookie-parser');
 var bodyParser  =   require('body-parser');
 var session     =   require('express-session');
-
+var mongoose    =   require("mongoose");
+var methodOverride = require('method-override')
 //all the app.use
 passportFunc(passport);
+mongoose.connect('mongodb://localhost:27017/users');
+app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(cookieParser()); 
 app.use(bodyParser.json());
