@@ -12,6 +12,7 @@
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
     <% } %>
+    <h1>Here is Login Page</h1>
 	<form name="client" action="/login" method="post">
 		Email: <input type="text" name="Email">
 		<br>
@@ -21,6 +22,8 @@
 		<br>
 		<input type="submit" value="Login">
 	</form> 
+	<br>
+	<a href="/"> <button>Back</button></a>
 </div>
 </body>
 </html>

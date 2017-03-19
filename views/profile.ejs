@@ -9,5 +9,11 @@
 </head>
 <body>
 <h1>here is profile</h1>
+	<% if (user.Email) { %>
+		<p>
+	        <strong>login email</strong>: <%= user.Email %><br>
+	        <strong>login password</strong>: <%= user.Password %>
+	    </p>
+	<% } %>
 </body>
 </html>

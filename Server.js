@@ -53,17 +53,17 @@ function isLoggedIn(req, res, next) {
 
 //handle gets
 router.get("/",function(req,res){
-    res.json('home');
+    res.render("index.ejs");
 });
 
 router.get("/signup",function(req,res){
-    res.render("signup.ejs")
+    res.render("signup.ejs");
 });
 router.get("/login",function(req,res){
     res.render("login.ejs",{ message: req.flash('loginMessage')});
 });
 router.get('/profile', isLoggedIn, function(req, res) {
-    res.render('profile.ejs')
+    res.render('profile.ejs', {user : req.user});
 });
 
 //handle posts
@@ -91,7 +91,7 @@ router.route("/api/users")
     .post(function(req,res){
         var db = new userSchema();
         var response = {};
-        db.Email = req.body.Email;
+        db.Email = req.body.Email.toLowerCase();
         db.Password = req.body.Password;
         db.Usertype = "normal";
         var check_format = isEmail(req.body.Email);
