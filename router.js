@@ -1,4 +1,5 @@
-var userSchema  =   require("./models/userSchema");
+var userSchema      =   require("./models/userSchema");
+var scheduleSchema  =   require("./models/scheduleSchema")
 
 module.exports = function(router, passport) {
     //email check
@@ -37,8 +38,26 @@ module.exports = function(router, passport) {
                 failureFlash : true // allow flash messages
             }));
 
+    //REST requests for all users
+    router.route("/api/schedules")
+        .get(isLoggedIn,function(req,res){
 
-    //REST requests
+        })
+
+        .post(isLoggedIn,function(req,res){
+
+        })
+
+        .put(isLoggedIn,function(req,res){
+
+        })
+
+        .delete(isLoggedIn,function(req,res){
+
+        })
+
+
+    //REST requests for admin only
     router.route("/api/users")
         .get(isLoggedIn,function(req,res){
             if (req.user.Usertype === "admin"){
