@@ -76,16 +76,20 @@ router.post('/login', passport.authenticate('local-login', {
 
 //REST requests
 router.route("/api/users")
-    .get(function(req,res){
-        var response = {};
-        userSchema.find({},function(err,data){
-            if(err) {
-                response = "fetching data error";
-            } else {
-                response = data;
-            }
-            res.json(response);
-        });
+    .get(isLoggedIn,function(req,res){
+        if (req.user.Usertype === "admin"){
+            var response = {};
+            userSchema.find({},function(err,data){
+                if(err) {
+                    response = "fetching data error";
+                } else {
+                    response = data;
+                }
+                res.json(response);
+            });
+        }
+        else
+            res.json("you have not right to view this");
     })
 
     .post(function(req,res){
@@ -121,57 +125,69 @@ router.route("/api/users")
     });
 
 router.route("/api/users/:Email")
-    .get(function(req,res){
-        var response = {};
-        userSchema.find({"Email":req.params.Email},function(err,data){
-            if(err) {
-                response = "fetching data error";
-            } else {
-                response = data
-            }
-            res.json(response);
-        });
-    })
-    .put(function(req,res){
-        var response = {};
-        userSchema.find({"Email":req.params.Email},function(err,data){
-            if(err) {
-                response = "fetching data error";
-            } 
-            else {
-                if(req.body.Email !== undefined) {
-                    data.Email = req.body.Email;
+    .get(isLoggedIn,function(req,res){
+        if (req.user.Usertype === "admin"){
+            var response = {};
+            userSchema.find({"Email":req.params.Email},function(err,data){
+                if(err) {
+                    response = "fetching data error";
+                } else {
+                    response = data
                 }
-                if(req.body.Password !== undefined) {
-                    data.Password = req.body.Password;
-                }
-                data.save(function(err){
-                    if(err) {
-                        response = "updating data error"
-                    } else {
-                        response = "Data has been updated for "+req.params.id
-                    }
-                    res.json(response);
-                })
-            }
-        });
+                res.json(response);
+            });
+        }
+        else
+            res.json("you have not right to view this");
     })
-    .delete(function(req,res){
-        var response = {};
-        userSchema.find({"Email":req.params.Email},function(err,data){
-            if(err) {
-                response = {"message" : "Error fetching data"};
-            } else {
-                userSchema.remove({"Email" : req.params.Email},function(err){
-                    if(err) {
-                        response = "Error deleting data"
-                    } else {
-                        response = "Data in"+req.params.Email+" has been deleted"
+    .put(isLoggedIn,function(req,res){
+        if (req.user.Usertype === "admin"){
+            var response = {};
+            userSchema.find({"Email":req.params.Email},function(err,data){
+                if(err) {
+                    response = "fetching data error";
+                } 
+                else {
+                    if(req.body.Email !== undefined) {
+                        data.Email = req.body.Email;
                     }
-                    res.json(response);
-                });
-            }
-        });
+                    if(req.body.Password !== undefined) {
+                        data.Password = req.body.Password;
+                    }
+                    data.save(function(err){
+                        if(err) {
+                            response = "updating data error"
+                        } else {
+                            response = "Data has been updated for "+req.params.id
+                        }
+                        res.json(response);
+                    })
+                }
+            });
+        }
+        else
+            res.json("you have not right to do this");
+    })
+    .delete(isLoggedIn,function(req,res){
+        if (req.user.Usertype === "admin"){
+            var response = {};
+            userSchema.find({"Email":req.params.Email},function(err,data){
+                if(err) {
+                    response = {"message" : "Error fetching data"};
+                } else {
+                    userSchema.remove({"Email" : req.params.Email},function(err){
+                        if(err) {
+                            response = "Error deleting data"
+                        } else {
+                            response = "Data in"+req.params.Email+" has been deleted"
+                        }
+                        res.json(response);
+                    });
+                }
+            });
+        }
+        else
+            res.json("you have not right to do this");
     })
 
 app.use('/',router);
