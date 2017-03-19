@@ -8,12 +8,23 @@
 
 </head>
 <body>
+<div align="center">
 <h1>here is profile</h1>
 	<% if (user.Email) { %>
-		<p>
-	        <strong>login email</strong>: <%= user.Email %><br>
-	        <strong>login password</strong>: <%= user.Password %>
-	    </p>
+			<p>
+		        <strong>login email</strong>: <%= user.Email %><br>
+		        <strong>login password</strong>: <%= user.Password %><br>
+		        <strong>login usertype</strong>: <%= user.Usertype %>
+		    </p>
+	    	<% if(user.Usertype==="admin") { %>
+	    		<a href="/api/users"><button>users-info</button></a>
+	    		<br>
+	    		<br>
+	    		<form name="client" action="/api/users" method="delete">
+					Email: <input type="text" name="Email"> <input type="submit" value="Delete">
+				</form> 
+	    	<% } %>
 	<% } %>
+</div>
 </body>
 </html>
