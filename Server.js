@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch',
+    secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
@@ -42,8 +42,13 @@ function isEmail(email)
     return re.test(email);
 } 
 
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
 
-//get pages
+//handle gets
 router.get("/",function(req,res){
     res.json('home');
 });
@@ -51,6 +56,19 @@ router.get("/",function(req,res){
 router.get("/signup",function(req,res){
     res.render("signup.ejs")
 });
+router.get("/login",function(req,res){
+    res.render("login.ejs",{ message: req.flash('loginMessage')});
+});
+router.get('/profile', isLoggedIn, function(req, res) {
+    res.render('profile.ejs')
+});
+
+//handle posts
+router.post('/login', passport.authenticate('local-login', {
+            successRedirect : '/profile', // redirect to the secure profile section
+            failureRedirect : '/login', // redirect back to the signup page if there is an error
+            failureFlash : true // allow flash messages
+        }));
 
 
 //REST requests
