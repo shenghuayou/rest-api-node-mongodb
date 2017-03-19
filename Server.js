@@ -11,7 +11,9 @@ var cookieParser= require('cookie-parser');
 var bodyParser  = require('body-parser');
 var session     = require('express-session');
 
+//all the app.use
 passportFunc(passport);
+app.use(morgan('dev'));
 app.use(cookieParser()); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,13 +37,14 @@ var allowCrossDomain = function(req, res, next) {
 app.use(bodyParser.json());
 app.use(allowCrossDomain);
 
-//a simple email check
+//email check
 function isEmail(email)
 {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 } 
 
+//check if login
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();

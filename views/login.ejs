@@ -9,6 +9,9 @@
 </head>
 <body>
 <div align="center">
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
 	<form name="client" action="/login" method="post">
 		Email: <input type="text" name="Email">
 		<br>
