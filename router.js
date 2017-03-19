@@ -16,6 +16,7 @@ module.exports = function(router, passport) {
         res.redirect('/');
     }
 
+
     //handle gets
     router.get("/",function(req,res){
         res.render("index.ejs");
@@ -28,7 +29,7 @@ module.exports = function(router, passport) {
         res.render("login.ejs",{ message: req.flash('loginMessage')});
     });
     router.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {user : req.user});
+        res.render('profile.ejs', {user : req.user, message:""});
     });
 
     //handle posts
@@ -48,10 +49,10 @@ module.exports = function(router, passport) {
                 } else {
                     response = data;
                 }
-                res.json(response);
+                res.render('schedule.ejs',{mySchedule:response})
             });
         })
-        
+
         .post(isLoggedIn,function(req,res){
             var db = new scheduleSchema();
             var response = {};
@@ -64,7 +65,7 @@ module.exports = function(router, passport) {
                     res.json(response);
                 } 
                 else {
-                    res.json("You have created schedule");
+                    res.render('profile.ejs', {user : req.user, message:"you have created a new schedule"});
                 }
             }) 
         })

@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+<title>Schedule</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<div align="center">
+	<h1>My Schedule</h1>
+	<table>
+		<td><b>Event</b></td>
+		<td><b>Time</b></td>
+	<% for(var i=0; i < mySchedule.length; i++) { %>
+	   <tr>
+	     <td><%= mySchedule[i].Event %></td>
+	     <td><%= mySchedule[i].Time %></td>
+	   </tr>
+	<% } %>
+	</table>
+</div>
+</body>
+</html>
