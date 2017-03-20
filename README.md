@@ -19,6 +19,5 @@ This is a simple REST API that has following functions:
 - node server.js
 - go to http://localhost:3333
 ## Notice ##
-- this program only allows to register "normal" user.
-- To register "admin" user, you will need to run mongodb client, then add data into mongodb.
+- to register admin user, you will need to go to sign up page. type "admin" in Email field and any password in Password field.
 - only "admin" user can perform GET, DELETE for users information.
