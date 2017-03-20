@@ -1,5 +1,6 @@
 var userSchema      =   require("./models/userSchema");
-var scheduleSchema  =   require("./models/scheduleSchema")
+var scheduleSchema  =   require("./models/scheduleSchema");
+var bcrypt           = require('bcrypt-nodejs');
 
 module.exports = function(router, passport) {
     //email check
@@ -101,7 +102,7 @@ module.exports = function(router, passport) {
             var db = new userSchema();
             var response = {};
             db.Email = req.body.Email.toLowerCase();
-            db.Password = req.body.Password;
+            db.Password = bcrypt.hashSync(req.body.Password, bcrypt.genSaltSync(8), null);
             db.Usertype = "normal";
             var check_format = isEmail(req.body.Email);
             var promise = userSchema.find({"Email":req.body.Email}).exec()
