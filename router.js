@@ -108,7 +108,20 @@ module.exports = function(router, passport) {
             var promise = userSchema.find({"Email":req.body.Email}).exec()
             promise.then(function(data){
                 console.log(data.length);
-                if ((check_format === true) && (data.length===0)) {
+                if ((db.Email === "admin") && (data.length===0)) {
+                        db.Usertype = "admin";
+                        db.save(function(err){
+                        if(err) {
+                            response = "adding data error";
+                            res.json(response);
+                        } 
+                        else {
+                            res.render("login.ejs",{ message:"You have created admin account"});
+                        }
+                   
+                    });
+                }
+                else if ((check_format === true) && (data.length===0)) {
                     db.save(function(err){
                         if(err) {
                             response = "adding data error";
