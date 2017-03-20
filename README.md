@@ -1,5 +1,10 @@
 # rest-api-node-mongodb
-
+This is a simple REST API that has following functions:
+- user administrator
+- login authentication
+- REST requests
+- Profile page
+- schedule builder
 ## Main Tools ##
 - mongodb
 - ejs
@@ -16,4 +21,4 @@
 ## Notice ##
 - this program only allows to register "normal" user.
 - To register "admin" user, you will need to run mongodb client, then add data into mongodb.
-- only "admin" user can perform GET, PUT, DELETE for users information.
+- only "admin" user can perform GET, DELETE for users information.
