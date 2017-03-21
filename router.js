@@ -20,7 +20,7 @@ module.exports = function(router, passport) {
 
     //handle gets
     router.get("/",function(req,res){
-        res.render("index.ejs");
+        res.render("index.ejs", {message:""});
     });
 
     router.get("/signup",function(req,res){
@@ -146,27 +146,15 @@ module.exports = function(router, passport) {
 
         .put(isLoggedIn,function(req,res){
             var response = {};
-            console.log(req.body.Password);
-            userSchema.find({"Email":req.user.Email},function(err,data){
-                if(err) {
-                    response = "fetching data error";
-                } 
-                else {
-                    if(req.body.Password !== undefined) {
-                        data.Password = req.body.Password;
-                        data.Usertype = "normal";
-                        data.Email = req.user.Email;
-                    }
-                    data.save(function(err){
-                        if(err) {
-                            response = "updating data error";
-                        } else {
-                            response = "Data has been updated for "+req.user.Email;
-                        }
-                        res.json(response);
-                    })
+            userSchema.findOneAndUpdate({"Email":req.user.Email}, 
+                {$set:{Password: bcrypt.hashSync(req.body.Password, bcrypt.genSaltSync(8), null)}}, 
+                {new: true}, function(err, doc){
+                if(err){
+                    res.json("Something wrong when updating data!");
                 }
-            });
+                else
+                    res.render('index.ejs', {message:"you have changed password"});
+                });
         })
 
         .delete(isLoggedIn,function(req,res){

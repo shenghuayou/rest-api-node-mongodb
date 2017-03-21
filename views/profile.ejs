@@ -14,10 +14,6 @@
 		        <strong>login password</strong>: <%= user.Password %><br>
 		        <strong>login usertype</strong>: <%= user.Usertype %><br>
 		        <a href="/"><button>log-out</button></a>
-
-		       	<!-- <form method="POST" action="/api/users/?_method=PUT">
-				  	New Password: <input type="text" name="Password"><button type="submit">Change</button>
-				</form> -->
 				<hr>
 				<h2>Create Schedule</h2>
 				<a href="/api/schedules"><button>My-Schedule</button></a>
@@ -31,7 +27,11 @@
 				<% if (message.length > 0) { %>
 				 	<%= message %>
 				 <% } %>
-
+				 <hr>
+				 <h2>Change Password</h2>
+		       	<form method="POST" action="/api/users/?_method=PUT">
+				  	New Password: <input type="text" name="Password"><button type="submit">Change</button>
+				</form>
 		    </p>
 	    	<% if(user.Usertype==="admin") { %>
 	    		<hr>
