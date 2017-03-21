@@ -12,6 +12,18 @@ var bodyParser  =   require('body-parser');
 var session     =   require('express-session');
 var mongoose    =   require("mongoose");
 var methodOverride = require('method-override');
+var http 		= 	require('http');
+var server 		= 	http.createServer(app);
+var io 			= 	require('socket.io').listen(server);
+
+//real time connection
+io.on('connection', function (socket) {
+  socket.emit('to_client',  "hello world to client");
+  socket.on('to_server', function (data) {
+   console.log(data);
+  });
+});
+
 
 //all the app.use
 passportFunc(passport);
@@ -44,5 +56,5 @@ routerFunc(router,passport);
 
 app.use('/',router);
 
-app.listen(3333);
+server.listen(3333);
 console.log("server is up in port 3333");

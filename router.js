@@ -32,6 +32,9 @@ module.exports = function(router, passport) {
     router.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {user : req.user, message:""});
     });
+    router.get('/chat', isLoggedIn, function(req, res) {
+        res.render('chat.ejs');
+    });
 
     //handle posts
     router.post('/login', passport.authenticate('local-login', {
