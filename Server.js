@@ -19,7 +19,7 @@ var io 			= 	require('socket.io').listen(server);
 //real time connection
 io.on('connection', function (socket) {
   socket.on('chatMessage', function(from, message){
-    io.broadcast.emit('chatMessage', from, message);
+    io.emit('chatMessage', from, message);
   });
 });
 

@@ -4,17 +4,32 @@
     <script src='/socket.io/socket.io.js' type='text/javascript'></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script>
+
+        //create connection and send message to server
         var socket = io.connect('http://localhost:3333')
-
         function sendMessage(){
-          var message = $('#i_input_msg').val();
-          if(message != '') {
-            socket.emit('chatMessage', username, message);
-           }
-          socket.on('chatMessage', function(from, message){
-              $('#i_messages').append('<li>' + from + '</b>: ' + message + '</li>');
-            });
+          var my_message = $('#i_input_msg').val();
+          var my_username = "<%= username %>";
+          console.log(my_message);
+          $('#i_input_msg').removeAttr('value');
+          if(my_message != '') {
+            socket.emit('chatMessage', my_username, my_message);
+           }         
+       }
 
+       //use enter key to send message
+       $(document).on('keypress', function(e) {
+          if(e.keyCode == 13) {
+              e.preventDefault();
+              $("#i_button").click();    
+              return false;
+              }
+        });
+
+       //append message to li
+          socket.on('chatMessage', function(from, message){
+              $('#i_messages').append('<li>' + '<strong>' + from + ': </strong>' + message + '</li>');
+            });
 
     </script>
 </head>
@@ -24,9 +39,7 @@
     Username: <%= username %>
     <hr>
     <ul id="i_messages"></ul>
-    <form id="i_form" action="" onsubmit="return sendMessage();" >
-        Message: <input type="text" id="i_input_msg"></input>
-       <input type="submit" id="button" value="Send"/> 
+        Message: <input type="text" id="i_input_msg"></input><button id="i_button" onclick="sendMessage()">Send</button>
     </form>
     </div>
 </body>
