@@ -18,11 +18,12 @@ var io 			= 	require('socket.io').listen(server);
 
 //real time connection
 io.on('connection', function (socket) {
-  socket.emit('to_client',  "hello world to client");
-  socket.on('to_server', function (data) {
-   console.log(data);
+  socket.on('chatMessage', function(from, message){
+    io.broadcast.emit('chatMessage', from, message);
   });
 });
+
+
 
 
 //all the app.use

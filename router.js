@@ -33,7 +33,7 @@ module.exports = function(router, passport) {
         res.render('profile.ejs', {user : req.user, message:""});
     });
     router.get('/chat', isLoggedIn, function(req, res) {
-        res.render('chat.ejs');
+        res.render('chat.ejs',{username : req.user.Email});
     });
 
     //handle posts
