@@ -5,6 +5,7 @@ This is a simple REST API that has following functions:
 - REST requests
 - Profile page
 - schedule builder
+- real time chat
 ## Main Tools ##
 - mongodb
 - ejs
